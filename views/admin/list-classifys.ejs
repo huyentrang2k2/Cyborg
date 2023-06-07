@@ -1,0 +1,46 @@
+<%- include('component/header') -%>
+<div class="container-fluid pt-4 px-4">
+	<div class="row g-4">
+		<div class="col-12">
+			<div class="bg-light rounded h-100 p-4">
+				<h6 class="mb-4">Basic Table</h6>
+				<table class="table">
+					<thead>
+						<tr>
+							<th scope="col">id</th>
+							<th scope="col">Name</th>
+							<th scope="col">Thao tác</th>
+						</tr>
+					</thead>
+					<tbody id="row"></tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+</div>
+<script>
+	const getData = () => {
+		axios
+			.get('http://localhost:3000/api/list_classifys')
+			.then((response) => {
+				console.log(response.data);
+				const row = document.querySelector('#row');
+				response.data.forEach((item, index) => {
+					const div = document.createElement('tr');
+					div.innerHTML = `
+								<th scope="row">${item.id}</th>
+								<td>${item.name}</td>
+								<td class="">
+									<a href="/product/del/${item.id}" class="btn btn-outline-danger"><i class="bi bi-trash"></i></a>
+									<a href="/admin/${item.id}" class="btn btn-outline-warning"><i class="bi bi-pen-fill"></i></a>
+								</td>
+								`;
+					row.appendChild(div);
+				});
+			})
+			.catch((err) => console.log(err.response.data.message));
+	};
+
+	getData();
+</script>
+<%- include('component/footer') -%>
